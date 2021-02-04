@@ -1,14 +1,33 @@
-import '../styles/globals.css'
-import {Provider} from "react-redux";
-import store from "../redux/store";
+import {useEffect, useState} from "react";
+import withReduxSaga from 'next-redux-saga'
+import React from 'react';
 
-function MyApp({Component, pageProps}) {
+import wrapper from "../redux/store";
+import Header from "../components/Header/Header";
+
+import {
+    createGenerateClassName,
+    StylesProvider
+} from '@material-ui/core/styles';
+
+const generateClassName = createGenerateClassName({
+    productionPrefix: 'myclasses-'
+});
+
+
+function App({Component, pageProps}) {
+    const [key, setKey] = useState(0);
+
+    useEffect(() => {
+        setKey(1);
+    }, [key]);
+
     return (
-        <Provider store={store}>
+        <StylesProvider key={key} generateClassName={generateClassName}>
+            <Header/>
             <Component {...pageProps} />
-        </Provider>
-        )
+        </StylesProvider>
+    )
 }
 
-
-export default MyApp
+export default wrapper.withRedux(withReduxSaga(App))

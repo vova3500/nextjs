@@ -1,19 +1,23 @@
-export const FETCH_START = "FETCH_START"
-export const FETCH_FAIL = "FETCH_FAIL"
+import Cookies from 'js-cookie'
+export const FETCH_USER_START = "FETCH_USER_START"
 
 export const SET_USER = "SET_USER"
+
 export const LOGOUT = "LOGOUT"
+export const SING_IN = "SING_IN"
 
 const initialState = {
     userId: "",
-    token: "",
+    token: ((!(typeof window === "undefined") && Cookies.get('token'))|| ""),
     loader: false,
     error: ""
+
 };
 
 const user = (state = initialState, action) => {
     switch (action.type) {
-        case FETCH_START: {
+
+        case FETCH_USER_START: {
             return {
                 ...state,
                 loader: true,
@@ -24,18 +28,14 @@ const user = (state = initialState, action) => {
                 ...state,
                 userId: action.payload.userId,
                 token: action.payload.token,
-            };
-        }
-        case FETCH_FAIL: {
-            return {
-                ...state,
                 loader: false,
-                error: action.payload,
             };
         }
+
         case LOGOUT: {
             return {
                 ...state,
+                userId: "",
                 token: "",
             };
         }

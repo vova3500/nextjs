@@ -1,4 +1,3 @@
-import { usersAPI } from "../../api";
 import {
     FETCH_FAIL,
     FETCH_START,
@@ -9,7 +8,11 @@ import {
     DELETE_USER,
     EDIT_USER,
     FOLLOW_AND_UNFOLLOW,
-    ERROR_CLEAR
+    ERROR_CLEAR,
+
+    USERS_FETCH_REQUESTED,
+    USER_FETCH_REQUESTED
+
 } from "../reducers/users";
 
 export const fetchStart = () => ({
@@ -17,19 +20,21 @@ export const fetchStart = () => ({
 });
 
 export const fetchFail = (error) => ({
-    type: FETCH_FAIL,
-    payload: error
-});
+        type: FETCH_FAIL,
+        payload: error
+})
 
 export const errorClear = () => ({
     type: ERROR_CLEAR
 });
 
-export const fetchUsersSuccess = (users, total) => ({
-    type: FETCH_USERS_SUCCESS,
-    payload: users,
-    count: total
-});
+export const fetchUsersSuccess = (users, total) => {
+    return {
+        type: FETCH_USERS_SUCCESS,
+        payload: users,
+        count: total
+    };
+}
 export const fetchUserSuccess = (users, total) => ({
     type: FETCH_USER_SUCCESS,
     payload: users,
@@ -47,34 +52,23 @@ export const onEditUser = (user, toast) => ({
     toast
 });
 
-export const followAndUnfollow = (users,id) => ({
+export const followAndUnfollow = (users, id) => ({
     type: FOLLOW_AND_UNFOLLOW,
     users: users,
     id: id
 });
 
-export const loadingUsers = (page) => async (dispatch) => {
-    dispatch(fetchStart())
+export const usersFetchRequested = (token, page) => ({
+    type: USERS_FETCH_REQUESTED,
+    page,
+    token
+});
 
-    try{
-        let response = await usersAPI.getUsers(page);
-        dispatch(fetchUsersSuccess(response.data.data,response.data.total))
-    }
-    catch (e){
-        dispatch(fetchFail(e.message))
-    }
-};
+export const userFetchRequested = (token,id) => ({
+    type: USER_FETCH_REQUESTED,
+    id,
+    token
+});
 
-export const loadingFullInfoUser = (id) => async (dispatch) => {
-    dispatch(fetchStart())
-
-    try{
-        let response = await usersAPI.getUserFullProfile(id);
-        dispatch(fetchUserSuccess(response.data))
-    }
-    catch (e){
-        dispatch(fetchFail(e.message))
-    }
-};
 
 
