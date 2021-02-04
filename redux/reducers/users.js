@@ -1,4 +1,5 @@
 import {calcDate, getCurrentAge} from "../../utils/helpers"
+import {HYDRATE} from 'next-redux-wrapper';
 
 export const DELETE_USER = "DELETE_USER";
 export const EDIT_USER = "EDIT_USER";
@@ -7,13 +8,13 @@ export const FOLLOW_AND_UNFOLLOW = "FOLLOW_AND_UNFOLLOW";
 export const FETCH_START = "FETCH_START";
 export const FETCH_FAIL = "FETCH_FAIL";
 
-export const FETCH_USER_SUCCESS = "FETCH_USER_SUCCESS";
+export const USERS_FETCH_REQUESTED = "USERS_FETCH_REQUESTED"
+export const USER_FETCH_REQUESTED = "USER_FETCH_REQUESTED"
 
+export const FETCH_USER_SUCCESS = "FETCH_USER_SUCCESS";
 export const FETCH_USERS_SUCCESS = "FETCH_USERS_SUCCESS";
 
 export const ERROR_CLEAR = "ERROR_CLEAR";
-
-
 
 const initialState = {
     items: [],
@@ -25,10 +26,9 @@ const initialState = {
 
 const users = (state = initialState, action) => {
     switch (action.type) {
-        case FETCH_START: {
+        case HYDRATE: {
             return {
-                ...state,
-                loading: true
+                ...state = action.payload.users
             }
         }
         case FETCH_USERS_SUCCESS: {
@@ -40,6 +40,12 @@ const users = (state = initialState, action) => {
                 loading: false
             };
         }
+        case FETCH_START: {
+            return {
+                ...state,
+                loading: true
+            }
+        }
         case FETCH_FAIL: {
             return {
                 ...state,
@@ -48,6 +54,7 @@ const users = (state = initialState, action) => {
             }
         }
         case FETCH_USER_SUCCESS: {
+
             let age = getCurrentAge(action.payload.dateOfBirth)
 
             return {
@@ -98,7 +105,7 @@ const users = (state = initialState, action) => {
             const newUsers = [...state.items].map((user) => {
                 if (user.id === action.id) {
 
-                  user = activeUser[0]
+                    user = activeUser[0]
                 }
                 return user
             })
@@ -121,4 +128,5 @@ const users = (state = initialState, action) => {
         }
     }
 }
+
 export default users
