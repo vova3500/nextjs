@@ -34,6 +34,12 @@ const useStyles = makeStyles((theme) => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
+    error: {
+        marginTop: 10,
+        display:"flex",
+        justifyContent:"center",
+        color: "red"
+    }
 }));
 
 interface TypeFormData {
@@ -44,6 +50,9 @@ interface TypeFormData {
 interface TypeLoginSelector {
     user: {
         token: string
+    }
+    users: {
+        error: string
     }
 }
 
@@ -58,6 +67,7 @@ const Login = () => {
         dispatch(singIn(data.Username, data.password))
     };
 
+    const error = useSelector((state: TypeLoginSelector) => state.users.error)
     const token = useSelector((state: TypeLoginSelector) => state.user.token)
     if (token) {
         if (typeof window !== 'undefined'){
@@ -97,6 +107,12 @@ const Login = () => {
                         type="password"
                         autoComplete="current-password"
                     />
+                    {
+                       ( error === "Request failed with status code 401") &&
+                       <div className={classes.error}>
+                           Incorrect password and login *
+                       </div>
+                    }
                     <Button
                         type="submit"
                         fullWidth

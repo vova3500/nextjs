@@ -1,34 +1,70 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+<h1 align="center">Social Network</h1>
 
-First, run the development server:
+<p align="center">
 
-```bash
+<img src="https://img.shields.io/github/issues/vova3500/nextjs" >
+<img src="https://img.shields.io/github/forks/vova3500/nextjs">
+<img src="https://img.shields.io/github/stars/vova3500/nextjs">
+<img src="https://img.shields.io/github/license/vova3500/nextjs">
+
+</p>
+
+<h2 align="center">Technologies</h2>
+
+<p align="center">
+
+<img src="https://img.shields.io/badge/-React%20JS-blue">
+<img src="https://img.shields.io/badge/-Next%20JS-yellow">
+<img src="https://img.shields.io/badge/-Typescript-red">
+<img src="https://img.shields.io/badge/-Saga-grean">
+<img src="https://img.shields.io/badge/-Redux-blueviolet">
+<img src="https://img.shields.io/badge/-Material UI-important">
+
+</p>
+
+<h2>React</h2>
+<p>A JavaScript library for building user interfaces</p>
+
+<h2>Next JS</h2>
+<p>Next.js gives you the best developer experience with all the features you need for production: hybrid static & server rendering, TypeScript support, smart bundling, route pre-fetching, and more. No config needed.</p>
+
+<h2>Typescript</h2>
+<p>TypeScript is an open-source language which builds on JavaScript, one of the world’s most used tools, by adding static type definitions.
+
+Types provide a way to describe the shape of an object, providing better documentation, and allowing TypeScript to validate that your code is working correctly.</p>
+
+<h2>Saga</h2>
+<p>Is a library that aims to make application side effects (i.e. asynchronous things like data fetching and impure things like accessing the browser cache) easier to manage, more efficient to execute, easy to test, and better at handling failures.</p>
+
+<h2>Redux</h2>
+<p>A Predictable State Container for JS Apps</p>
+
+<h2>Material UI</h2>
+<p>React components for faster and easier web development. Build your own design system, or start with Material Design</p>
+
+<h3 align="center">Form Login</h3>
+
+![Form login](readme/formLogin.png "Title")
+
+<h3 align="center">Card User</h3>
+
+![Card User](readme/cadrUser.png "Title")
+
+<h3 align="center">Form Edit Info</h3>
+
+![Card User](readme/formEditInfo.png "Title")
+
+<h3 align="center">Form Add User</h3>
+
+![Card User](readme/addFollow.png "Title")
+
+
+<h3>Project setup</h2>
+
+```
+npm install
 npm run dev
-# or
-yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/index.tsx`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.

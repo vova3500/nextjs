@@ -1,5 +1,7 @@
 import React, {useState} from "react";
 import {Controller, useForm} from "react-hook-form";
+// @ts-ignore
+import Toastify from 'toastify-js'
 import {useDispatch, useSelector} from "react-redux";
 
 import {followAndUnfollow} from "../../../redux/actions/users";
@@ -39,6 +41,18 @@ const useStyles = makeStyles((theme) => ({
     button: {
         width: "30%",
         marginTop: 20
+    },
+    toast: {
+        width: 400,
+        color: "white",
+        position: "absolute",
+        right: 20,
+        paddingTop: 15,
+        paddingBottom: 15,
+        paddingLeft: 25,
+        paddingRight: 25,
+        borderRadius: 5,
+        zIndex: 9999
     }
 }));
 
@@ -70,6 +84,16 @@ const ModalFollow  = (id: string) => {
 
     const onSubmit = (data: TypeModalFollowForm) => {
         dispatch(followAndUnfollow(data.users, id))
+        Toastify({
+            className: classes.toast,
+            text: "Add follow",
+            duration: 1000,
+            newWindow: true,
+            gravity: "bottom",
+            position: "left",
+            backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+            stopOnFocus: true,
+        }).showToast();
     };
 
     return (
@@ -87,7 +111,9 @@ const ModalFollow  = (id: string) => {
                                 limitTags={4}
                                 id="multiple-limit-tags"
                                 options={users}
-                                defaultValue={myUser[0] && myUser[0].follow}
+                                defaultValue={myUser[0].follow}
+                                // @ts-ignore
+                                getOptionLabel={(option) => option.lastName}
                                 renderInput={(params) => (
                                     <TextField  {...params} variant="outlined" label="AllUser" />
                                 )}

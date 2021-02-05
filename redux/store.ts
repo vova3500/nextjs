@@ -18,6 +18,7 @@ const bindMiddleware = (middleware: Middleware[]): StoreEnhancer => {
     return applyMiddleware(...middleware)
 }
 
+// @ts-ignore
 export const makeStore: MakeStore<AppState>  = ()=> {
     // 1: Create the middleware
     const sagaMiddleware = createSagaMiddleware();

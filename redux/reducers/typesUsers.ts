@@ -71,7 +71,7 @@ interface UsersFetchRequestedUserAction {
 interface UserFetchRequestedUserAction {
     type: typeof USER_FETCH_REQUESTED
     payload: {
-        token: string | undefined, id: string | undefined
+        token: string | undefined, id: string | string[] | undefined
     }
 }
 
