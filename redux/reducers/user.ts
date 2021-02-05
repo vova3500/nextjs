@@ -1,20 +1,23 @@
+// @ts-ignore
 import Cookies from 'js-cookie'
-export const FETCH_USER_START = "FETCH_USER_START"
 
-export const SET_USER = "SET_USER"
+import {
+    FETCH_USER_START,
+    SET_USER,
+    LOGOUT,
+    UserActionTypes,
+    UserState
+} from "./typesUser"
 
-export const LOGOUT = "LOGOUT"
-export const SING_IN = "SING_IN"
 
-const initialState = {
+const initialState: UserState = {
     userId: "",
     token: ((!(typeof window === "undefined") && Cookies.get('token'))|| ""),
     loader: false,
     error: ""
-
 };
 
-const user = (state = initialState, action) => {
+const user = (state = initialState, action: UserActionTypes) => {
     switch (action.type) {
 
         case FETCH_USER_START: {

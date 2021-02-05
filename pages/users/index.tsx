@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {END} from 'redux-saga'
+import {connect, useDispatch, useSelector} from "react-redux";
 import cookies from 'next-cookies'
+import {END} from 'redux-saga';
 
 import {errorClear, usersFetchRequested} from "../../redux/actions/users";
 import wrapper from "../../redux/store";
@@ -13,6 +13,7 @@ import Error from "../../utils/Error/Error";
 
 import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import {AppState} from "../../redux/reducers/typeStore";
 
 const useStyles = makeStyles({
     root: {
@@ -32,13 +33,32 @@ const useStyles = makeStyles({
     }
 });
 
-const Index = ({users}) => {
+interface TypeUsersProps {
+    users: Array<{
+        id: string
+        firstName: string
+        lastName: string
+        email: string
+        picture: string
+        follow: []
+    }>
+}
+
+interface TypeUsersSelector {
+    users: {
+        loading: boolean
+        error: string
+    }
+}
+
+const Index = (props: TypeUsersProps) => {
     const classes = useStyles();
 
     const dispatch = useDispatch()
-    const loading = useSelector(({users}) => users.loading)
-    const error = useSelector(({users}) => users.error)
+    const loading = useSelector((state: TypeUsersSelector) => state.users.loading)
+    const error = useSelector((state: TypeUsersSelector) => state.users.error)
 
+    // @ts-ignore
     useEffect(() => {
         return dispatch(errorClear())
     }, [dispatch])
@@ -49,7 +69,7 @@ const Index = ({users}) => {
                 <SkeletonUser loading={loading}>
                     <Error error={error}>
                         {
-                            users.map((user) => (
+                            props.users.map((user) => (
                                 <User
                                     key={user.id}
                                     id={user.id}
@@ -57,7 +77,6 @@ const Index = ({users}) => {
                                     lastName={user.lastName}
                                     email={user.email}
                                     picture={user.picture}
-                                    isFollow={user.isFollow}
                                 />))
                         }
                     </Error>
@@ -73,16 +92,21 @@ const Index = ({users}) => {
 export const getServerSideProps = wrapper.getServerSideProps(
     async (ctx) => {
         const allCookie = cookies(ctx)
-        await ctx.store.dispatch(usersFetchRequested(allCookie.token, ctx.query.id))
+        await ctx.store.dispatch(usersFetchRequested(allCookie.token, 0))
         ctx.store.dispatch(END)
-        await ctx.store.sagaTask.toPromise()
+        await ctx.store.sagaTask?.toPromise()
 
         const state = ctx.store.getState()
-
         return {
-            props:{ users: state.users.items}
+            props: {users: state.users.items}
         }
     }
 );
 
-export default Index
+
+function mapStateToProps(state: AppState) {
+    return ({users: state.users.items})
+}
+
+// @ts-ignore
+export default connect(mapStateToProps)(Index)

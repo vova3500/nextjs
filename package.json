@@ -9,6 +9,12 @@
   },
   "dependencies": {
     "@material-ui/lab": "^4.0.0-alpha.57",
+    "@types/react": "^17.0.1",
+    "@types/react-dom": "^17.0.0",
+    "@types/react-redux": "^7.1.16",
+    "@typescript-eslint/eslint-plugin": "^4.14.2",
+    "@typescript-eslint/parser": "^4.14.2",
+    "@zeit/next-typescript": "^1.1.1",
     "js-cookie": "^2.2.1",
     "next": "^10.0.6",
     "next-cookies": "^2.0.3",
@@ -25,10 +31,12 @@
   "devDependencies": {
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
+    "@types/node": "^14.14.25",
     "axios": "^0.21.1",
     "next-redux-saga": "^4.1.2",
     "prop-types": "^15.7.2",
     "react-hook-form": "^6.14.2",
-    "toastify-js": "^1.9.3"
+    "toastify-js": "^1.9.3",
+    "typescript": "^4.1.3"
   }
 }

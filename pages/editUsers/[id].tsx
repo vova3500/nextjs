@@ -2,6 +2,7 @@ import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {useForm, Controller} from "react-hook-form";
 import Link from 'next/link';
+// @ts-ignore
 import Toastify from 'toastify-js'
 import cookies from "next-cookies";
 import {END} from "redux-saga";
@@ -12,6 +13,8 @@ import {errorClear, onEditUser, userFetchRequested} from "../../redux/actions/us
 import Error from "../../utils/Error/Error";
 import Input from "../../utils/Input/Input";
 import {calcDate, getCurrentAge} from "../../utils/helpers";
+
+import {TypeUser} from "../../redux/reducers/typesUsers";
 
 import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -62,18 +65,28 @@ const useStyles = makeStyles({
     }
 });
 
-const EditUsers = ({activeUser, loading}) => {
-    console.log(loading)
+interface TypeEditUsers {
+    activeUser: TypeUser
+    loading: boolean
+}
+
+interface TypeEditUsersSelector {
+    users: {
+        error: string
+    }
+}
+
+const EditUsers = ({activeUser, loading}: TypeEditUsers) => {
     const classes = useStyles();
     const {handleSubmit, register, control, setValue} = useForm();
 
     const dispatch = useDispatch();
 
-    // const loading = useSelector(({users}) => users.loading)
-    const error = useSelector(({users}) => users.error)
+    const error = useSelector((state: TypeEditUsersSelector) => state.users.error)
 
     let myDate = activeUser.dateOfBirth ? activeUser.dateOfBirth.slice(0, 10) : 0
 
+    // @ts-ignore
     useEffect(() => {
         return dispatch(errorClear())
     }, [dispatch])
@@ -91,17 +104,32 @@ const EditUsers = ({activeUser, loading}) => {
         }).showToast();
     }
 
-    const onSubmit = data => {
-        dispatch(onEditUser({...data, id}, toast))
+    const onSubmit = (data: TypeUser) => {
+        const newUsers: {
+            firstName: string;
+            lastName: string;
+            dateOfBirth: string;
+            id: string; age: number;
+            email: string
+        } = {
+            age: data.age,
+            id: data.id,
+            dateOfBirth: data.dateOfBirth,
+            email: data.email,
+            firstName: data.firstName,
+            lastName: data.lastName
+        }
+        console.log(newUsers)
+        dispatch(onEditUser(newUsers, toast))
     };
 
-    const handleChangeDateOfBirth = (e) => {
+    const handleChangeDateOfBirth = (e: any) => {
         const newAge = getCurrentAge(e.target.value)
 
         setValue("dateOfBirth", e.target.value);
         setValue("age", newAge);
     }
-    const handleChangeAge = (value) => {
+    const handleChangeAge = (value: number) => {
         const newDate = calcDate(value, activeUser.dateOfBirth)
 
         setValue("age", value);
@@ -116,7 +144,7 @@ const EditUsers = ({activeUser, loading}) => {
     return (
         <LoadingEditUser loading={loading}>
             <Container className={classes.root}>
-                <Container className={classes.exit}>
+                <Container>
                     <Link href="/">
                         <IconButton color="primary" aria-label="upload picture" component="span">
                             <ArrowBackIcon fontSize="large" color="primary"/>
@@ -131,12 +159,14 @@ const EditUsers = ({activeUser, loading}) => {
                             inputRef={register}
                             name="firstName"
                             defaultValue={activeUser.firstName}
+                            type="text"
                         />
                         <Input
                             className={classes.input}
                             inputRef={register}
                             name="lastName"
                             defaultValue={activeUser.lastName}
+                            type="text"
                         />
                         <Input
                             className={classes.input}
@@ -166,7 +196,8 @@ const EditUsers = ({activeUser, loading}) => {
                                     Age
                                 </Typography>
                                 <Slider
-                                    onChange={(e, value) => {
+                                    // @ts-ignore
+                                    onChange={(_, value: number) => {
                                         handleChangeAge(value)
                                     }}
                                     value={value || 0}
@@ -190,16 +221,21 @@ const EditUsers = ({activeUser, loading}) => {
 export const getServerSideProps = wrapper.getServerSideProps(
     async (ctx) => {
         const allCookie = cookies(ctx)
-        await ctx.store.dispatch(userFetchRequested(allCookie.token,ctx.query.id))
+        await ctx.store.dispatch(userFetchRequested(allCookie.token, ctx.query.id))
         ctx.store.dispatch(END)
-        await ctx.store.sagaTask.toPromise()
-        console.log(ctx.store.getState())
+        await ctx.store.sagaTask?.toPromise()
         const state = ctx.store.getState()
-        return {
-            props: {
-                activeUser: state.users.activeUser,
-                loading: state.users.loading
+        if (state.users.activeUser.id) {
+            return {
+                props: {
+                    activeUser: state.users.activeUser,
+                    loading: state.users.loading
+                }
             }
+        }
+
+        return {
+            notFound: true
         }
     }
 )

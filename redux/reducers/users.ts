@@ -1,22 +1,23 @@
 import {calcDate, getCurrentAge} from "../../utils/helpers"
 import {HYDRATE} from 'next-redux-wrapper';
 
-export const DELETE_USER = "DELETE_USER";
-export const EDIT_USER = "EDIT_USER";
-export const FOLLOW_AND_UNFOLLOW = "FOLLOW_AND_UNFOLLOW";
+import {UsersState} from "./typesUsers";
+import {
+    FETCH_FAIL,
+    FETCH_START,
 
-export const FETCH_START = "FETCH_START";
-export const FETCH_FAIL = "FETCH_FAIL";
+    FETCH_USERS_SUCCESS,
+    FETCH_USER_SUCCESS,
 
-export const USERS_FETCH_REQUESTED = "USERS_FETCH_REQUESTED"
-export const USER_FETCH_REQUESTED = "USER_FETCH_REQUESTED"
+    DELETE_USER,
+    EDIT_USER,
+    FOLLOW_AND_UNFOLLOW,
+    ERROR_CLEAR,
+    UsersActionTypes
 
-export const FETCH_USER_SUCCESS = "FETCH_USER_SUCCESS";
-export const FETCH_USERS_SUCCESS = "FETCH_USERS_SUCCESS";
+} from "./typesUsers";
 
-export const ERROR_CLEAR = "ERROR_CLEAR";
-
-const initialState = {
+const initialState: UsersState = {
     items: [],
     count: 0,
     activeUser: {},
@@ -24,13 +25,15 @@ const initialState = {
     error: ""
 };
 
-const users = (state = initialState, action) => {
+interface AppState {
+    users: Array<object>
+    user: object
+}
+
+const users = (state = initialState, action: UsersActionTypes | { type: typeof HYDRATE; payload: AppState }) => {
     switch (action.type) {
-        case HYDRATE: {
-            return {
-                ...state = action.payload.users
-            }
-        }
+        case HYDRATE:
+            return {...state, ...action.payload.users};
         case FETCH_USERS_SUCCESS: {
             const newUsers = [...action.payload].map((item) => ({...item, follow: []}))
             return {
@@ -74,21 +77,21 @@ const users = (state = initialState, action) => {
 
         case EDIT_USER: {
             const newUsers = [...state.items].map((item) => {
-                if (item.id === action.payload.id) {
+                if (item.id === action.payload.user.id) {
                     return {
                         ...item,
-                        firstName: action.payload.firstName,
-                        lastName: action.payload.lastName,
-                        email: action.payload.email
+                        firstName: action.payload.user.firstName,
+                        lastName: action.payload.user.lastName,
+                        email: action.payload.user.email
                     }
                 }
                 return item
             })
 
-            const newDate = calcDate(action.payload.age, action.payload.dateOfBirth)
-            const newActiveUser = {...state.activeUser, ...action.payload, dateOfBirth: newDate}
+            const newDate = calcDate(action.payload.user.age, action.payload.user.dateOfBirth)
+            const newActiveUser = {...state.activeUser, ...action.payload.user, dateOfBirth: newDate}
 
-            action.toast()
+            action.payload.toast()
 
             return {
                 ...state,
@@ -98,12 +101,12 @@ const users = (state = initialState, action) => {
         }
 
         case FOLLOW_AND_UNFOLLOW: {
-            const activeUser = [...state.items].filter((item) => item.id === action.id)
+            const activeUser = [...state.items].filter((item) => item.id === action.payload.id)
 
-            activeUser[0].follow = JSON.parse(JSON.stringify(action.users))
+            activeUser[0].follow = JSON.parse(JSON.stringify(action.payload.users))
 
             const newUsers = [...state.items].map((user) => {
-                if (user.id === action.id) {
+                if (user.id === action.payload.id) {
 
                     user = activeUser[0]
                 }

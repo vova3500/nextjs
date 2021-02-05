@@ -15,7 +15,12 @@ const useStyles = makeStyles({
     }
 });
 
-const LoadingEditUser = ({children, loading}) => {
+interface TypeLoadingEditUser {
+    children: any
+    loading: boolean
+}
+
+const LoadingEditUser = ({children, loading}: TypeLoadingEditUser) => {
     const classes = useStyles();
 
     if (loading){
