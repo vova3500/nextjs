@@ -95,7 +95,7 @@ const EditUsers = ({activeUser, loading}: TypeEditUsers) => {
         Toastify({
             className: classes.toast,
             text: "Changes are successful",
-            duration: 3000,
+            duration: 1000,
             newWindow: true,
             gravity: "bottom",
             position: "left",
