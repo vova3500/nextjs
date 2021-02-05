@@ -3,12 +3,16 @@ import {TypeUser} from "./typesUsers";
 export interface AppState {
     users: {
         items: Array<TypeUser>
+        count: number
         loading: boolean
-        activeUser: {
-            id: string | undefined
-        }
+        activeUser: TypeUser
+        error: string
+
     }
     user: {
-        id: string | undefined
+        id: string
+        token: string
+        loader: boolean
+        error: string
     }
 }
