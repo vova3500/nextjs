@@ -59,7 +59,6 @@ Types provide a way to describe the shape of an object, providing better documen
 
 ![Card User](readme/addFollow.png "Title")
 
-
 <h3>Project setup</h2>
 
 ```
