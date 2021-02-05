@@ -36,6 +36,17 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+interface TypeFormData {
+    Username: string
+    password: string
+}
+
+interface TypeLoginSelector {
+    user: {
+        token: string
+    }
+}
+
 const Login = () => {
     const router = useRouter()
     const { register, handleSubmit} = useForm();
@@ -43,11 +54,11 @@ const Login = () => {
 
     const dispatch = useDispatch();
 
-    const onSubmit = data => {
+    const onSubmit = (data: TypeFormData) => {
         dispatch(singIn(data.Username, data.password))
     };
 
-    const token = useSelector(({user}) => user.token)
+    const token = useSelector((state: TypeLoginSelector) => state.user.token)
     if (token) {
         if (typeof window !== 'undefined'){
             router.push("/users")

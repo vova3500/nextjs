@@ -1,4 +1,5 @@
 import React from "react";
+// @ts-ignore
 import Cookies from 'js-cookie'
 import {useDispatch, useSelector} from "react-redux";
 import {useRouter} from "next/router";
@@ -13,14 +14,20 @@ import Button from "@material-ui/core/Button";
 
 
 const useStyles = makeStyles({
-    root:{
+    root: {
         width: "90%"
     },
     toolbar: {
-        display:"flex",
+        display: "flex",
         justifyContent: "space-between"
     },
 });
+
+interface TypeHeaderSelector {
+    user: {
+        token: string
+    }
+}
 
 const Header = () => {
     const classes = useStyles()
@@ -29,7 +36,7 @@ const Header = () => {
 
     const dispatch = useDispatch()
 
-    const token = useSelector(({user}) => user.token)
+    const token = useSelector((state: TypeHeaderSelector) => state.user.token)
 
     const onLogout = () => {
         Cookies.remove('token')
@@ -49,7 +56,11 @@ const Header = () => {
     )
 }
 
-function Title({title}) {
+interface TypeTitleProps {
+    title:string
+}
+
+function Title({title}: TypeTitleProps) {
     return (
         <Typography variant="h6" color="inherit">
             {title}

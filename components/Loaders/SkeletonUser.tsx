@@ -24,7 +24,12 @@ const useStyles = makeStyles({
     }
 });
 
-const SkeletonUser = ({ children, loading}) => {
+interface TypeSkeletonUserProps {
+    children: any
+    loading: boolean
+}
+
+const SkeletonUser = ({ children, loading}: TypeSkeletonUserProps) => {
     const classes = useStyles();
 
     if (loading) {

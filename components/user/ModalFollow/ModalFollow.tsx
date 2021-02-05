@@ -42,19 +42,33 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const ModalFollow  = (id) => {
+interface TypeModalFollowForm {
+    users: Array<object>
+}
+
+interface TypeModalFollowSelector {
+    users: {
+        items: Array<{
+            id:string
+            follow: Array<object>
+            lastName: string
+        }>
+    }
+}
+
+const ModalFollow  = (id: string) => {
     const classes = useStyles();
     const dispatch = useDispatch()
 
     const { control, handleSubmit} = useForm();
 
-    const users = useSelector(({users}) => users.items)
+    const users = useSelector((state: TypeModalFollowSelector) => state.users.items)
 
-    const [myUser] = useState(users.filter((user) => user.id === id))
+    const [myUser] = useState(users.filter((user:{id: string}) => user.id === id))
 
-    const usersFollowing = users.filter((user) => user.follow)
+    const usersFollowing = users.filter((user: {follow: Array<object>}) => user.follow)
 
-    const onSubmit = data => {
+    const onSubmit = (data: TypeModalFollowForm) => {
         dispatch(followAndUnfollow(data.users, id))
     };
 
@@ -73,8 +87,7 @@ const ModalFollow  = (id) => {
                                 limitTags={4}
                                 id="multiple-limit-tags"
                                 options={users}
-                                defaultValue={myUser[0].follow}
-                                getOptionLabel={(option) => option.lastName}
+                                defaultValue={myUser[0] && myUser[0].follow}
                                 renderInput={(params) => (
                                     <TextField  {...params} variant="outlined" label="AllUser" />
                                 )}

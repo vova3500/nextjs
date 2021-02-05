@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import PropTypes from 'prop-types';
 import {useDispatch} from "react-redux";
 import Link from "next/link";
 
@@ -46,7 +45,15 @@ const useStyles = makeStyles({
 
 });
 
-const User = ({id, firstName, lastName, email, picture}) => {
+interface TypeUser {
+    id: string
+    firstName: string
+    lastName: string
+    email: string,
+    picture: string
+}
+
+const User = ({id, firstName, lastName, email, picture}: TypeUser) => {
     const classes = useStyles();
 
     const dispatch = useDispatch()
@@ -106,14 +113,6 @@ const User = ({id, firstName, lastName, email, picture}) => {
             </Modal>
         </Card>
     )
-}
-
-User.propTypes = {
-    id: PropTypes.string,
-    firstName: PropTypes.string,
-    lastName: PropTypes.string,
-    email: PropTypes.string,
-    picture: PropTypes.string
 }
 
 export default User

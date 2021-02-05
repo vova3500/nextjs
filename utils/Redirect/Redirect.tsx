@@ -1,7 +1,11 @@
 import {useRouter} from "next/router";
 import {useEffect} from "react";
 
-function Redirect({ to }) {
+interface TypeRedirect {
+    to : string
+}
+
+function Redirect({to}: TypeRedirect) {
     const router = useRouter();
 
     useEffect(() => {

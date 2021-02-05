@@ -1,10 +1,16 @@
+import React from "react";
 import {useSelector} from "react-redux";
 
 import Redirect from "../utils/Redirect/Redirect";
 
-const HomePage = () => {
+interface TypeHomePage{
+    user:{
+        token: string
+    }
+}
 
-    const token = useSelector(({user}) => user.token)
+const HomePage = () => {
+    const token = useSelector(({user}:TypeHomePage) => user.token)
     return <>
         {token ? <Redirect to="/users"/> : <Redirect to="/login"/>}
     </>

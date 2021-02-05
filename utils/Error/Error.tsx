@@ -1,4 +1,5 @@
 import React from "react";
+// @ts-ignore
 import Cookies from 'js-cookie'
 import {useDispatch} from "react-redux";
 
@@ -6,7 +7,12 @@ import {logOut} from "../../redux/actions/user";
 import {errorClear} from "../../redux/actions/users";
 import Redirect from "../Redirect/Redirect";
 
-const Error = ({children, error}) => {
+interface TypeError{
+    children: any
+    error: string
+}
+
+const Error = ({children, error}: TypeError) => {
     const dispatch = useDispatch()
     switch (error) {
         case "Request failed with status code 403" :{

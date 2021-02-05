@@ -5,7 +5,7 @@ const instance = axios.create({
 });
 
 export const usersAPI = {
-  getUsers(page = 0,token) {
+  getUsers(page = 0,token:string| undefined) {
     return instance.get(
         `user?page=${page}&limit=20`, {
           headers: {
@@ -15,7 +15,7 @@ export const usersAPI = {
         }
     );
   },
-  getUserFullProfile(id,token) {
+  getUserFullProfile(id: string, token:string| undefined) {
     return instance.get(
         `user/${id}`, {
           headers: {
@@ -28,7 +28,7 @@ export const usersAPI = {
 }
 
 export const userAPI = {
-  singIn(username, password) {
+  singIn(username:string, password: string) {
     return instance.post(
         `sign-in`, {
           username,

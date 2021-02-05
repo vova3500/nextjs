@@ -1,4 +1,5 @@
 import {call, put, takeEvery} from 'redux-saga/effects'
+// @ts-ignore
 import Cookies from 'js-cookie'
 
 import {userAPI, usersAPI} from "../pages/api";
@@ -6,24 +7,25 @@ import {userAPI, usersAPI} from "../pages/api";
 import {fetchFail, fetchStart, fetchUsersSuccess, fetchUserSuccess} from "./actions/users";
 import {fetchSignInSuccess, fetchStartUser} from "./actions/user";
 
-import {USER_FETCH_REQUESTED, USERS_FETCH_REQUESTED} from "./reducers/users";
-import {SING_IN} from "./reducers/user";
+import {USER_FETCH_REQUESTED, USERS_FETCH_REQUESTED} from "./reducers/typesUsers";
+import {SING_IN} from "./reducers/typesUser";
 
-function* fetchUsers(action) {
+
+function* fetchUsers(action: typesFetchUsers) {
     yield put(fetchStart())
     try {
-        const response = yield call(() => usersAPI.getUsers(action.page,action.token));
+        const response = yield call(() => usersAPI.getUsers(action.payload.page, action.payload.token));
         yield put(fetchUsersSuccess(response.data.data, response.data.total))
     } catch (e) {
         yield put(fetchFail(e.message))
     }
 }
 
-function* singIn({payload}) {
+function* singIn(action: typesSingIn) {
     yield put(fetchStartUser())
 
     try {
-        const response = yield call(() => userAPI.singIn(payload.username, payload.password));
+        const response = yield call(() => userAPI.singIn(action.payload.username, action.payload.password));
         Cookies.set('token', response.data.token)
         yield put(fetchSignInSuccess(response.data.userId, response.data.token))
     } catch (e) {
@@ -31,11 +33,11 @@ function* singIn({payload}) {
     }
 }
 
-function* fetchUser(action) {
+function* fetchUser(action: typesFetchUser) {
     yield put(fetchStart())
 
     try {
-        const response = yield call(() => usersAPI.getUserFullProfile(action.id,action.token));
+        const response = yield call(() => usersAPI.getUserFullProfile(action.payload.id, action.payload.token));
         yield put(fetchUserSuccess(response.data))
     } catch (e) {
         yield put(fetchFail(e.message))
@@ -49,3 +51,25 @@ function* mySaga() {
 }
 
 export default mySaga;
+
+interface typesFetchUsers {
+    type: typeof USERS_FETCH_REQUESTED
+    payload: {
+        page: number
+        token: string
+    }
+}
+interface typesSingIn {
+    type: typeof SING_IN
+    payload: {
+        username: string
+        password: string
+    }
+}
+interface typesFetchUser {
+    type: typeof USER_FETCH_REQUESTED
+    payload: {
+        id: string
+        token: string
+    }
+}

@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
-import withReduxSaga from 'next-redux-saga'
 import React from 'react';
+import { AppProps } from 'next/app'
 
 import wrapper from "../redux/store";
 import Header from "../components/Header/Header";
@@ -15,8 +15,8 @@ const generateClassName = createGenerateClassName({
 });
 
 
-function App({Component, pageProps}) {
-    const [key, setKey] = useState(0);
+function App({Component, pageProps}: AppProps) {
+    const [key, setKey] = useState<number>(0);
 
     useEffect(() => {
         setKey(1);
@@ -30,4 +30,4 @@ function App({Component, pageProps}) {
     )
 }
 
-export default wrapper.withRedux(withReduxSaga(App))
+export default wrapper.withRedux((App))
