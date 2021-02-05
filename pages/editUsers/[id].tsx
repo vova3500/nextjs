@@ -119,7 +119,6 @@ const EditUsers = ({activeUser, loading}: TypeEditUsers) => {
             firstName: data.firstName,
             lastName: data.lastName
         }
-        console.log(newUsers)
         dispatch(onEditUser(newUsers, toast))
     };
 
